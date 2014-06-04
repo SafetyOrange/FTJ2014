@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-	public bool jumping, diving, accelerating, inair, stationary, earthbound, falling;
-	Vector2 vel, acc, pos;
+	public bool jumping, diving, accelerating, jumped, stationary, earthbound, falling;
+	Vector2 vel;
 	GameObject g;
 	float thisy, lasty;
 
@@ -15,31 +15,17 @@ public class Player : MonoBehaviour {
 		jumping = false;
 		diving = false;
 		accelerating = false;
-		inair = false;
+		jumped = false;
 		stationary = true;
 		earthbound = true;
-		inair = false;
 		falling = false;
 		thisy = -100f;
 		lasty = -100f;
-		//		vel = new Vector2 (0, 0);
-//		acc = new Vector2 (0, 0);
-//		pos = new Vector2 (transform.position.x, transform.position.y);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-
-
-//		if(Input.GetKeyDown ("f")){
-//			accelerating = true;
-//			
-//		} else if(Input.GetKeyUp ("f")){
-//			accelerating = false;
-//		}
-//		Debug.Log (Time.deltaTime + " - stopped: " + stopped + ", jumping: " + jumping + ", diving: " + diving + ", accelerating: " + accelerating);
-
+		
 	}
 
 	void FixedUpdate(){
@@ -80,13 +66,6 @@ public class Player : MonoBehaviour {
 		} else if (transform.rotation.z>0){
 			transform.Rotate(Vector3.back*Time.deltaTime);
 		}
-
-//		vel.y -= 1f;
-//		vel += acc;
-//		pos += vel;
-//		acc = new Vector2 (0, 0);
-//
-//		transform.position = new Vector3 (pos.x, pos.y, 0);
 
 //		// State 1 - stationary
 //		stationary = true;
@@ -130,9 +109,9 @@ public class Player : MonoBehaviour {
 		if(jumping){
 			earthbound = false;
 			vel = new Vector2(vel.x, 500f);
-			if(!inair){
+			if(!jumped){
 				rigidbody2D.AddForce(Vector3.up*vel.y);
-				inair = true;
+				jumped = true;
 			}
 		}
 
@@ -154,33 +133,6 @@ public class Player : MonoBehaviour {
 			stationary = true;
 		}
 
-
-
-//		if(!stopped){
-//		} else {
-//			if(vel.x>0){
-//				vel = new Vector2(vel.x-1, 0);
-//			}
-//		}
-//
-//		if(jumping && !inair){
-//			Debug.Log("inair");
-//			inair = true;
-//			rigidbody2D.AddForce(Vector3.up*500f);
-////			acc = new Vector2(0, 1);
-//		}
-//
-//		if(diving){
-//			Debug.Log("diving");
-//			rigidbody2D.AddForce(Vector3.down*500f);
-//		}
-//
-//		if(transform.position.y<-1.6f){
-//			inair = false;
-//			jumping = false;
-//			diving = false;
-//		}
-
 		g.transform.Rotate (Vector3.forward * Time.deltaTime*vel.x);
 		transform.position = new Vector3 (-3.7f, transform.position.y, transform.position.z);
 
@@ -189,7 +141,7 @@ public class Player : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D c){
 		if(c.gameObject.tag == "Ground-Inner"){
 			earthbound = true;
-			inair = false;
+			jumped = false;
 			falling = false;
 		}
 	}
