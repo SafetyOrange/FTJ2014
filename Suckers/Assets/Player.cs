@@ -4,13 +4,15 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	bool pressed;
-	bool maxDown;
+	float xSpeed, ySpeed;
+	GameObject planet;
 
 
 	// Use this for initialization
 	void Start () {
 
 		pressed=false;
+		planet = GameObject.FindWithTag("Ground");
 
 	}
 
@@ -18,6 +20,7 @@ public class Player : MonoBehaviour {
 
 		CheckInput();
 		HandleRotation();
+		Glide();
 
 	}
 
@@ -42,4 +45,20 @@ public class Player : MonoBehaviour {
 			else transform.Rotate(Vector3.back * Time.deltaTime * 175);
 		}
 	}
+
+	void RotatePlanet(){
+		xSpeed = rigidbody2D.velocity.x;
+		planet.transform.Rotate(Vector3.forward * Time.deltaTime * 60 * xSpeed);
+		rigidbody2D.velocity = new Vector2(0, rigidbody2D.velocity.y);
+
+	}
+
+	void Glide(){
+
+		Vector2 direction = new Vector2();
+		direction = GameObject.Find("Forward").transform.position - transform.position;
+		rigidbody2D.AddForce(direction.normalized);
+
+	}
+
 }
