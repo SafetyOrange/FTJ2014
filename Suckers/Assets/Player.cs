@@ -21,8 +21,16 @@ public class Player : MonoBehaviour {
 		CheckInput();
 		HandleRotation();
 		Glide();
+		RotatePlanet();
 
 	}
+
+	void FixedUpdate(){
+
+		rigidbody2D.velocity += new Vector2(0,-.1f);
+
+	}
+
 
 	void CheckInput(){
 
@@ -37,12 +45,12 @@ public class Player : MonoBehaviour {
 						//Not pressed, tilt nose up
 		if(!pressed){  
 			if (transform.eulerAngles.z>=89 && transform.eulerAngles.z<100) transform.eulerAngles = new Vector3(0,0,89);
-			else transform.Rotate(Vector3.forward * Time.deltaTime * 300);
+			else transform.Rotate(Vector3.forward * Time.deltaTime * 250);
 		}
 						//Pressed, tilt nose down
 		else{
 			if (transform.eulerAngles.z<=271 && transform.eulerAngles.z>100) transform.eulerAngles = new Vector3(0,0,271);
-			else transform.Rotate(Vector3.back * Time.deltaTime * 175);
+			else transform.Rotate(Vector3.back * Time.deltaTime * 200);
 		}
 	}
 
@@ -57,7 +65,7 @@ public class Player : MonoBehaviour {
 
 		Vector2 direction = new Vector2();
 		direction = GameObject.Find("Forward").transform.position - transform.position;
-		rigidbody2D.AddForce(direction.normalized);
+		rigidbody2D.AddForce(direction.normalized *10);
 
 	}
 
